@@ -8,10 +8,10 @@ public interface ITree<T> {
     void removeLeftSubTree();
     void removeAllElements();
     int size();
+    boolean isEmpty();
     String toString();
     void iteratorInOrder();
     void iteratorPreOrder();
     void iteratorPostOrder();
     void iteratorLevelOrder();
-
 }

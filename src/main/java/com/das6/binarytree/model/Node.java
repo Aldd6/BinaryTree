@@ -1,6 +1,6 @@
 package com.das6.binarytree.model;
 
-public class Node<T> {
+public class Node<T extends Comparable<T>> {
     private T value;
     private Node<T> left;
     private Node<T> right;
@@ -19,9 +19,7 @@ public class Node<T> {
         this.value = value;
     }
 
-    public Node<T> getLeft() {
-        return left;
-    }
+    public Node<T> getLeft() { return left; }
 
     public void setLeft(Node<T> left) {
         this.left = left;
