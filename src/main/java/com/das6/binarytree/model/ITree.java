@@ -1,17 +1,15 @@
 package com.das6.binarytree.model;
 
+import java.util.List;
+
 public interface ITree<T> {
     void insert(T value);
     void delete(T value);
-    boolean contains(T value);
-    void removeRightSubTree();
-    void removeLeftSubTree();
-    void removeAllElements();
+    boolean search(T value);
     int size();
     boolean isEmpty();
     String toString();
-    void iteratorInOrder();
-    void iteratorPreOrder();
-    void iteratorPostOrder();
-    void iteratorLevelOrder();
+    List<T> iteratorInOrder();
+    List<T> iteratorPreOrder();
+    List<T> iteratorPostOrder();
 }
