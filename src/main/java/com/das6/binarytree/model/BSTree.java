@@ -5,14 +5,23 @@ import java.util.List;
 public class BSTree<T extends Comparable<T>> implements ITree<T>{
 
     private Node<T> root;
-    private List<T> cachedData;
     private int count;
 
 
     public BSTree() {
         root = null;
-        cachedData = new LinkedList<>();
         count = 0;
+    }
+
+    public Node<T> getRoot() {
+        return this.root;
+    }
+
+    public int getMaxDepth(Node<T> node) {
+        if(node == null) {
+            return 0;
+        }
+        return 1 + Math.max(getMaxDepth(node.getLeft()), getMaxDepth(node.getRight()));
     }
 
     @Override
@@ -26,13 +35,13 @@ public class BSTree<T extends Comparable<T>> implements ITree<T>{
     }
 
     @Override
-    public boolean search(T value) {
+    public Node<T> search(T value) {
         return recursiveSearchValue(root, value);
     }
 
     @Override
     public void insert(T value) {
-        if(!search(value)) {
+        if(search(value) == null) {
             root = recursiveInsertValue(this.root, value);
         }
     }
@@ -92,16 +101,16 @@ public class BSTree<T extends Comparable<T>> implements ITree<T>{
         }
     }
 
-    private boolean recursiveSearchValue(Node<T> node, T value) {
+    private Node<T> recursiveSearchValue(Node<T> node, T value) {
         if(isEmptyThe(node)) {
-            return false;
+            return null;
         }
         if(isLessThan(node.getValue(), value)) {
             return recursiveSearchValue(node.getRight(), value);
         }else if(isMoreThan(node.getValue(), value)) {
             return recursiveSearchValue(node.getLeft(), value);
         }
-        return true;
+        return node;
     }
 
     private Node<T> recursiveInsertValue(Node<T> node, T value) {
