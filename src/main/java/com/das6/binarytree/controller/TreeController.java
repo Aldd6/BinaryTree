@@ -1,8 +1,9 @@
 package com.das6.binarytree.controller;
 
 import com.das6.binarytree.model.BSTree;
+import com.das6.binarytree.model.FileUploader;
 import javafx.animation.PauseTransition;
-import javafx.collections.FXCollections;
+import javafx.stage.FileChooser;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -44,6 +45,8 @@ public class TreeController implements Initializable{
     private int dataType = -1;
     private double radius = 30;
     private double vGap = 100;
+    private FileChooser fileChooser;
+    private FileUploader fp;
 
     @FXML
     public void resetTree(ActionEvent event) {
@@ -55,12 +58,39 @@ public class TreeController implements Initializable{
         displayTree();
     }
 
+    @FXML
+    public void uploadFile(ActionEvent event) {
+        Stage primaryStage = (Stage)drawField.getScene().getWindow();
+        fp.load(fileChooser.showOpenDialog(primaryStage));
+        dataType = fp.getDataType();
+        if(dataType > 0) {
+            switch (dataType) {
+                case 1 -> cbDataType.setValue("Integer");
+                case 2 -> cbDataType.setValue("Double");
+                case 3 -> cbDataType.setValue("String");
+                case 4 -> cbDataType.setValue("Character");
+            }
+            switchDataType();
+            fp.getDataCollected().forEach(item -> {
+                switch(dataType) {
+                    case 1 -> bst.insert(Integer.parseInt(item.toString()));
+                    case 2 -> bst.insert(Double.parseDouble(item.toString()));
+                    case 3 -> bst.insert(item.toString());
+                    case 4 -> bst.insert(item.toString().charAt(0));
+                }
+            });
+            displayTree();
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         treeNodes = new HashMap<>();
         btnResetAnimation.setOpacity(0);
         btnResetAnimation.setVisible(false);
         txtOrder.setDisable(true);
+        fileChooser = new FileChooser();
+        fp = new FileUploader();
         ContextMenu opForBst = new ContextMenu();
         MenuItem create = new MenuItem("Create");
         create.setOnAction(e -> {
@@ -277,9 +307,8 @@ public class TreeController implements Initializable{
         Circle circle = new Circle(x, y, radius);
         Text txt = new Text(x-10, y+6, root.getValue().toString());
         if(target.equals(root)) {
-            circle.setFill(Color.GREEN);
-            circle.setStroke(Color.GREEN);
-            txt.setFill(Color.WHITE);
+            circle.setFill(Color.SKYBLUE);
+            circle.setStroke(Color.SKYBLUE);
         }else {
             circle.setFill(Color.WHITE);
             circle.setStroke(Color.BLACK);
@@ -293,7 +322,7 @@ public class TreeController implements Initializable{
             Object value = order.get(index);
             if(treeNodes.containsKey(value.toString())){
                 Circle circle = treeNodes.get(value.toString());
-                PauseTransition animation = new PauseTransition(Duration.seconds(1.5));
+                PauseTransition animation = new PauseTransition(Duration.seconds(1));
                 animation.setOnFinished(event -> {
                     circle.setFill(Color.SKYBLUE);
                     circle.setStroke(Color.SKYBLUE);
