@@ -1,11 +1,13 @@
 package com.das6.binarytree;
 
+import com.das6.binarytree.model.FileUploader;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.layout.Pane;
 
+import java.io.File;
 import java.io.IOException;
 
 public class BinaryTree extends Application {
