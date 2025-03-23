@@ -15,3 +15,12 @@
     -fx-padding: 5px;
     -fx-background-color: #0047AB;
 }
+
+.button-save-icon {
+    -fx-background-image: url("download.png");
+    -fx-background-size: 30px 30px;
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-padding: 5px;
+    -fx-background-color: #7CDB74 ;
+}

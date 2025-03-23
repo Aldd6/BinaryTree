@@ -7,7 +7,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.layout.Pane;
 
-import java.io.File;
 import java.io.IOException;
 
 public class BinaryTree extends Application {
