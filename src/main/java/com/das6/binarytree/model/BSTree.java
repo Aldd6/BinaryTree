@@ -1,4 +1,5 @@
 package com.das6.binarytree.model;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -51,6 +52,20 @@ public class BSTree<T extends Comparable<T>> implements ITree<T>{
         root = recursiveDeleteValue(this.root, value);
     }
 
+    public int nodeLevel(Node<T> node, T value, int level) {
+        if(isEqual(node.getValue(), value)) {
+            return level;
+        }else {
+            if(isMoreThan(node.getValue(), value)) {
+                return nodeLevel(node.getLeft(), value, level + 1);
+            }
+            if(isLessThan(node.getValue(), value)) {
+                return nodeLevel(node.getRight(), value, level + 1);
+            }
+        }
+        return 0;
+    }
+
     @Override
     public List<T> iteratorInOrder() {
         List<T> path = new LinkedList<>();
@@ -69,6 +84,13 @@ public class BSTree<T extends Comparable<T>> implements ITree<T>{
     public List<T> iteratorPostOrder() {
         List<T> path = new LinkedList<>();
         postOrderTraversal(this.root, path);
+        return path;
+    }
+
+    @Override
+    public List<List<T>> iteratorLevelOrder() {
+        List<List<T>> path = new LinkedList<>();
+        levelOrderTraversal(this.root, path,0);
         return path;
     }
 
@@ -98,6 +120,17 @@ public class BSTree<T extends Comparable<T>> implements ITree<T>{
             postOrderTraversal(root.getLeft(), path);
             postOrderTraversal(root.getRight(), path);
             path.add(root.getValue());
+        }
+    }
+
+    private void levelOrderTraversal(Node<T> root, List<List<T>> path, int level) {
+        if(!isEmptyThe(root)) {
+            if(path.size() <= level) {
+                path.add(new ArrayList<>());
+            }
+            path.get(level).add(root.getValue());
+            levelOrderTraversal(root.getLeft(), path, level + 1);
+            levelOrderTraversal(root.getRight(), path, level + 1);
         }
     }
 
@@ -163,15 +196,19 @@ public class BSTree<T extends Comparable<T>> implements ITree<T>{
     private boolean isEmptyThe(Node<T> node) {
         return node == null;
     }
-
     //Es menor el valor del nodo que el valor dado
+
     private boolean isLessThan(T node, T value) {
         return node.compareTo(value) < 0;
     }
-
     //Es mayor el valor del nodo que el valor dado
+
     private boolean isMoreThan(T node, T value) {
         return node.compareTo(value) > 0;
+    }
+
+    private boolean isEqual(T node, T value) {
+        return node.compareTo(value) == 0;
     }
 
 }

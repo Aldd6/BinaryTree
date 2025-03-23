@@ -40,6 +40,7 @@ public class FileUploader {
                     }
                 }
             }
+            br.close();
         }catch(IOException e) {
             e.printStackTrace();
         }

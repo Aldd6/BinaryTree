@@ -12,7 +12,7 @@ public class SearchController {
     @FXML
     private Label lblDataType;
 
-    public Node searchNode(BSTree bst, int dataType) {
+    public Node<?> searchNode(BSTree bst, int dataType) {
         String baseValue = txtNodeValue.getText();
         return switch (dataType) {
             case 1 -> bst.search(Integer.parseInt(baseValue));
