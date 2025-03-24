@@ -1,6 +1,6 @@
 package com.das6.binarytree.controller;
 
-import com.das6.binarytree.model.BSTree;
+import com.das6.binarytree.model.ITree;
 import com.das6.binarytree.model.Node;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -12,7 +12,7 @@ public class SearchController {
     @FXML
     private Label lblDataType;
 
-    public Node<?> searchNode(BSTree bst, int dataType) {
+    public Node<?> searchNode(ITree bst, int dataType) {
         String baseValue = txtNodeValue.getText();
         return switch (dataType) {
             case 1 -> bst.search(Integer.parseInt(baseValue));

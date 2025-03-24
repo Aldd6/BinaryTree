@@ -13,4 +13,7 @@ public interface ITree<T extends Comparable<T>> {
     List<T> iteratorPreOrder();
     List<T> iteratorPostOrder();
     List<List<T>> iteratorLevelOrder();
+    Node<T> getRoot();
+    int nodeLevel(Node<T> node, T value, int level);
+
 }

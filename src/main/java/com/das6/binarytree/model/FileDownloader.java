@@ -9,10 +9,11 @@ import java.util.stream.Collectors;
 
 public class FileDownloader {
 
-    public boolean save(BSTree<?> bst, int dataType, File url) {
+    public boolean save(ITree<?> bst, int dataType, Tree treeType, File url) {
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(url));
             bw.write(dataTypeInFile(dataType) + "\n");
+            bw.write(treeTypeInFile(treeType) + "\n");
             bw.write("DATASET " + constructDataSetOf(bst).toString().replaceAll("\\s+","") + "\n");
             bw.close();
             return true;
@@ -22,7 +23,7 @@ public class FileDownloader {
         return false;
     }
 
-    private List<?> constructDataSetOf(BSTree<?> bst) {
+    private List<?> constructDataSetOf(ITree<?> bst) {
         return bst.iteratorLevelOrder().stream()
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
@@ -35,6 +36,13 @@ public class FileDownloader {
             case 3 -> "CREATE STRING";
             case 4 -> "CREATE CHARACTER";
             default -> "";
+        };
+    }
+
+    private String treeTypeInFile(Tree treeType) {
+        return switch (treeType) {
+            case BST -> "TYPE BST";
+            case AVL -> "TYPE AVL";
         };
     }
 }

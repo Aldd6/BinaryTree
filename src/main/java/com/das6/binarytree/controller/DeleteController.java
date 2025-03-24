@@ -1,6 +1,6 @@
 package com.das6.binarytree.controller;
 
-import com.das6.binarytree.model.BSTree;
+import com.das6.binarytree.model.ITree;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -11,7 +11,7 @@ public class DeleteController {
     @FXML
     private Label lblDataType;
 
-    public void deleteNode(BSTree bst, int dataType) {
+    public void deleteNode(ITree bst, int dataType) {
         String baseValue = txtNodeValue.getText();
         switch (dataType) {
             case 1 -> bst.delete(Integer.parseInt(baseValue));
