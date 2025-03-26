@@ -9,6 +9,7 @@ import java.util.List;
 
 public class FileUploader {
     private int dataType;
+    private Tree treeType;
     private List<?> dataCollected;
 
     public void load(File file) {
@@ -26,10 +27,12 @@ public class FileUploader {
                                 Data data = Data.valueOf(instructions[1].toUpperCase());
                                 setDataTypeInternal(data);
                                 break;
+                            case TYPE:
+                                Tree tree = Tree.valueOf(instructions[1].toUpperCase());
+                                setTreeTypeInternal(tree);
                             case DATASET:
                                 String dataDepured = instructions[1].replaceAll("[\\[\\](){}]","");
                                 dataCollected = Arrays.asList(dataDepured.split(","));
-
                                 break;
                             default:
                                 dataType = -1;
@@ -54,6 +57,10 @@ public class FileUploader {
         return dataCollected;
     }
 
+    public Tree getTreeType() {
+        return treeType;
+    }
+
     private void setDataTypeInternal(Data data) {
         switch (data) {
             case INTEGER:
@@ -71,5 +78,9 @@ public class FileUploader {
             default:
                 dataType = -1;
         }
+    }
+
+    private void setTreeTypeInternal(Tree tree) {
+        treeType = tree;
     }
 }

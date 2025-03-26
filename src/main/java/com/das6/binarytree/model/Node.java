@@ -2,11 +2,13 @@ package com.das6.binarytree.model;
 
 public class Node<T extends Comparable<T>> {
     private T value;
+    private int height;
     private Node<T> left;
     private Node<T> right;
 
     public Node(T value) {
         this.value = value;
+        this.height = 1;
         this.left = null;
         this.right = null;
     }
@@ -32,6 +34,10 @@ public class Node<T extends Comparable<T>> {
     public void setRight(Node<T> right) {
         this.right = right;
     }
+
+    public int getHeight() { return height; }
+
+    public void setHeight(int height) { this.height = height; }
 
     @Override
     public String toString() {

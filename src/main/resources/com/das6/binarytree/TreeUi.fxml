@@ -16,6 +16,8 @@
             <ColumnConstraints hgrow="SOMETIMES" minWidth="20.0" prefWidth="20.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="150.0" prefWidth="150.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="150.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="20.0" prefWidth="20.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="150.0" prefWidth="150.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="20.0" prefWidth="20.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="500.0" prefWidth="500.0" />
@@ -35,11 +37,12 @@
         </rowConstraints>
          <children>
             <ChoiceBox fx:id="cbDataType" prefHeight="30.0" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <ChoiceBox fx:id="cbTraverseTree" prefHeight="30.0" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-            <TextField fx:id="txtOrder" prefHeight="30.0" prefWidth="500.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
-            <Button fx:id="btnResetAnimation" mnemonicParsing="false" onAction="#resetTree" prefHeight="30.0" prefWidth="50.0" styleClass="button-restart-icon" stylesheets="@Styles/Styles.css" GridPane.columnIndex="7" GridPane.rowIndex="1" />
-            <Button fx:id="btnLoadTree" mnemonicParsing="false" onAction="#uploadFile" prefHeight="30.0" prefWidth="50.0" styleClass="button-upload-icon" stylesheets="@Styles/Styles.css" GridPane.columnIndex="10" GridPane.rowIndex="1" />
-            <Button fx:id="txtDownloadTree" mnemonicParsing="false" onAction="#downloadFile" prefHeight="30.0" prefWidth="50.0" styleClass="button-save-icon" stylesheets="@Styles/Styles.css" GridPane.columnIndex="12" GridPane.rowIndex="1" />
+            <ChoiceBox fx:id="cbTraverseTree" prefHeight="30.0" prefWidth="150.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+            <TextField fx:id="txtOrder" prefHeight="30.0" prefWidth="500.0" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+            <Button fx:id="btnResetAnimation" mnemonicParsing="false" onAction="#resetTree" prefHeight="30.0" prefWidth="50.0" styleClass="button-restart-icon" stylesheets="@Styles/Styles.css" GridPane.columnIndex="9" GridPane.rowIndex="1" />
+            <Button fx:id="btnLoadTree" mnemonicParsing="false" onAction="#uploadFile" prefHeight="30.0" prefWidth="50.0" styleClass="button-upload-icon" stylesheets="@Styles/Styles.css" GridPane.columnIndex="12" GridPane.rowIndex="1" />
+            <Button fx:id="txtDownloadTree" mnemonicParsing="false" onAction="#downloadFile" prefHeight="30.0" prefWidth="50.0" styleClass="button-save-icon" stylesheets="@Styles/Styles.css" GridPane.columnIndex="14" GridPane.rowIndex="1" />
+            <ChoiceBox fx:id="cbTreeType" prefHeight="32.0" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
          </children>
       </GridPane>
       <Pane fx:id="drawField" layoutX="1.0" layoutY="104.0" prefHeight="132.0" prefWidth="359.0" AnchorPane.bottomAnchor="-14.399999999999977" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.3999999999999773" AnchorPane.topAnchor="104.0" />

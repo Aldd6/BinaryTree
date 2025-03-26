@@ -2,11 +2,12 @@ package com.das6.binarytree.model;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BSTree<T extends Comparable<T>> implements ITree<T>{
 
-    private Node<T> root;
-    private int count;
+    protected Node<T> root;
+    protected int count;
 
 
     public BSTree() {
@@ -52,6 +53,7 @@ public class BSTree<T extends Comparable<T>> implements ITree<T>{
         root = recursiveDeleteValue(this.root, value);
     }
 
+    @Override
     public int nodeLevel(Node<T> node, T value, int level) {
         if(isEqual(node.getValue(), value)) {
             return level;
@@ -96,7 +98,9 @@ public class BSTree<T extends Comparable<T>> implements ITree<T>{
 
     @Override
     public String toString() {
-        return iteratorPostOrder().toString();
+        return iteratorLevelOrder().stream().flatMap(List::stream)
+                .collect(Collectors.toList())
+                .toString();
     }
 
     private void inOrderTraversal(Node<T> root, List<T> path) {
@@ -184,7 +188,7 @@ public class BSTree<T extends Comparable<T>> implements ITree<T>{
         return node;
     }
 
-    private T obtainMinimun(Node<T> node) {
+    protected T obtainMinimun(Node<T> node) {
         T minimun = node.getValue();
         while(node.getLeft() != null) {
             minimun = node.getLeft().getValue();
@@ -193,21 +197,21 @@ public class BSTree<T extends Comparable<T>> implements ITree<T>{
         return minimun;
     }
 
-    private boolean isEmptyThe(Node<T> node) {
+    protected boolean isEmptyThe(Node<T> node) {
         return node == null;
     }
     //Es menor el valor del nodo que el valor dado
 
-    private boolean isLessThan(T node, T value) {
+    protected boolean isLessThan(T node, T value) {
         return node.compareTo(value) < 0;
     }
     //Es mayor el valor del nodo que el valor dado
 
-    private boolean isMoreThan(T node, T value) {
+    protected boolean isMoreThan(T node, T value) {
         return node.compareTo(value) > 0;
     }
 
-    private boolean isEqual(T node, T value) {
+    protected boolean isEqual(T node, T value) {
         return node.compareTo(value) == 0;
     }
 

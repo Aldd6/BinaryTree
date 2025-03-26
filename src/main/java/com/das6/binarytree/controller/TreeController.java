@@ -1,8 +1,6 @@
 package com.das6.binarytree.controller;
 
-import com.das6.binarytree.model.BSTree;
-import com.das6.binarytree.model.FileDownloader;
-import com.das6.binarytree.model.FileUploader;
+import com.das6.binarytree.model.*;
 import javafx.animation.PauseTransition;
 import javafx.stage.FileChooser;
 import javafx.event.ActionEvent;
@@ -14,7 +12,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import com.das6.binarytree.model.Node;
 import javafx.scene.text.Text;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
@@ -34,6 +31,8 @@ public class TreeController implements Initializable{
     @FXML
     private ChoiceBox<String> cbDataType;
     @FXML
+    private ChoiceBox<String> cbTreeType;
+    @FXML
     private ChoiceBox<String> cbTraverseTree;
     @FXML
     private Button btnResetAnimation;
@@ -41,16 +40,19 @@ public class TreeController implements Initializable{
     private TextField txtOrder;
 
 
-    private BSTree bst;
+    ITree bst;
     private String[] dataTypes = {"Integer", "Double", "String", "Character"};
     private String[] traverseOrders = {"Visualize Pre-Order", "Visualize In-Order","Visualize Post-Order"};
+    private String[] treeTypes = {"BST", "AVL"};
     private Map<String, Circle> treeNodes;
     private int dataType = -1;
+    private Tree treeType = null;
     private double radius = 30;
     private double vGap = 100;
     private FileChooser fileChooser;
     private FileUploader fp;
     private FileDownloader fd;
+    private TreeFactory tr;
 
     @FXML
     public void resetTree(ActionEvent event) {
@@ -66,19 +68,27 @@ public class TreeController implements Initializable{
     public void uploadFile(ActionEvent event) {
         Stage primaryStage = (Stage)drawField.getScene().getWindow();
         cbDataType.setDisable(true);
+        cbTreeType.setDisable(true);
         File url = fileChooser.showOpenDialog(primaryStage);
         if(url != null) {
             fp.load(url);
             dataType = fp.getDataType();
-            if(dataType > 0) {
+            treeType = fp.getTreeType();
+            if(dataType > 0 && treeType != null) {
                 switch (dataType) {
                     case 1 -> cbDataType.setValue("Integer");
                     case 2 -> cbDataType.setValue("Double");
                     case 3 -> cbDataType.setValue("String");
                     case 4 -> cbDataType.setValue("Character");
                 }
+                switch(treeType) {
+                    case BST -> cbTreeType.setValue("BST");
+                    case AVL -> cbTreeType.setValue("AVL");
+                }
                 cbDataType.setDisable(false);
+                cbTreeType.setDisable(false);
                 switchDataType();
+                switchTreeType();
                 fp.getDataCollected().forEach(item -> {
                     switch(dataType) {
                         case 1 -> bst.insert(Integer.parseInt(item.toString()));
@@ -92,6 +102,7 @@ public class TreeController implements Initializable{
 
         }
         cbDataType.setDisable(false);
+        cbTreeType.setDisable(false);
     }
 
     @FXML
@@ -100,7 +111,7 @@ public class TreeController implements Initializable{
         Alert alert;
         if(bst != null && bst.getRoot() != null) {
             File url = saveFile(primaryStage);
-            boolean isFileSaved = fd.save(bst,dataType,url);
+            boolean isFileSaved = fd.save(bst,dataType,treeType,url);
             if(isFileSaved) {
                 alert = new Alert(AlertType.INFORMATION);
                 alert.initOwner(primaryStage);
@@ -128,6 +139,8 @@ public class TreeController implements Initializable{
         fileChooser = new FileChooser();
         fp = new FileUploader();
         fd = new FileDownloader();
+        tr = new TreeFactory();
+        cbTreeType.setDisable(true);
         ContextMenu opForBst = new ContextMenu();
         MenuItem create = new MenuItem("Create");
         create.setOnAction(e -> {
@@ -232,6 +245,10 @@ public class TreeController implements Initializable{
         cbTraverseTree.setValue("Select Traverse Order");
         cbTraverseTree.setOnAction(e -> traverseTree());
 
+        cbTreeType.getItems().addAll(treeTypes);
+        cbTreeType.setValue("Select Tree Type");
+        cbTreeType.setOnAction(e -> switchTreeType());
+
         drawField.setOnContextMenuRequested(e -> {
             opForBst.show(drawField, e.getScreenX(), e.getScreenY());
         });
@@ -242,30 +259,48 @@ public class TreeController implements Initializable{
             String op = cbDataType.getValue();
             switch (op) {
                 case "Integer":
-                    bst = new BSTree<Integer>();
                     dataType = 1;
-                    System.out.println("Creating Integer BST...");
                     break;
                 case "Double":
-                    bst = new BSTree<Double>();
                     dataType = 2;
-                    System.out.println("Creating Double BST...");
                     break;
                 case "String":
-                    bst = new BSTree<String>();
                     dataType = 3;
-                    System.out.println("Creating String BST...");
                     break;
                 case "Character":
-                    bst = new BSTree<Character>();
                     dataType = 4;
-                    System.out.println("Creating Character BST...");
                     break;
                 default:
-                    System.out.println("Cannot create a null BST...");
                     dataType = -1;
+                    break;
             }
-            displayTree();
+            cbTreeType.setDisable(false);
+            if(bst != null) {
+                switchTreeType();
+                displayTree();
+            }
+        }
+    }
+
+    public void switchTreeType() {
+        if(!cbTreeType.isDisabled()){
+            String tp = cbTreeType.getValue();
+            Data type = null;
+            switch (dataType) {
+                case 1 -> type = Data.INTEGER;
+                case 2 -> type = Data.DOUBLE;
+                case 3 -> type = Data.STRING;
+                case 4 -> type = Data.CHARACTER;
+            }
+            if(type != null){
+                switch (tp) {
+                    case "BST" -> bst = tr.createTree(Tree.BST,type);
+                    case "AVL" -> bst = tr.createTree(Tree.AVL,type);
+                }
+                if(bst != null) {
+                    displayTree();
+                }
+            }
         }
     }
 
@@ -338,6 +373,8 @@ public class TreeController implements Initializable{
 
     public void displayTree() {
         drawField.getChildren().clear();
+        String dt = cbDataType.getValue();
+        String ty = cbTraverseTree.getValue();
         if(bst.getRoot() != null) {
             displayRecursiveTree(bst.getRoot(),drawField.getWidth()/2,vGap,drawField.getWidth()/4);
         }
